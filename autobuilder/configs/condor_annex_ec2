@@ -1,0 +1,95 @@
+#!/bin/sh
+
+# This configuration file is a part of the HTCondor instalaltion.
+#
+# This configuration file is a modified condor-annex-ec2 script
+# which defined the boot-time configuration for an HTCondor Annex instance.
+# This script overrides the default condor-annex-ec2 script for Head Node
+# instances.
+# This script recovers the Head Node isntance ID and IP. These values are
+# then passed to the HTCondor components via 49ec2-instance.config file.
+
+# condor-annex-ec2     Boot-time configuration for an HTCondor annex instance.
+#
+# chkconfig: 345 97 11
+# description: Condor is a high throughput computing batch processing
+#              platform.
+
+### BEGIN INIT INFO
+# Provides: condor-annex-ec2
+# Default-Start: 3 4 5
+# Default-Stop: 0 1 2 6
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Short-Description: HTCondor annex configuration
+# Description: Boot-time configuration for an HTCondor annex instance.
+### END INIT INFO
+
+# Source function library
+. /etc/init.d/functions
+
+# Source networking configuration
+[ -f /etc/sysconfig/network ] && . /etc/sysconfig/network
+
+# Source Condor configuration
+[ -f /etc/sysconfig/condor ] && . /etc/sysconfig/condor
+
+# Check that networking is up
+[ "${NETWORKING}" = "no" ] && exit 1
+
+# Check that HTCondor is configured to run
+chkconfig condor || exit 1
+
+start() {
+    echo -n "Configuring HTCondor to be an EC2 annex: "
+
+(
+# Acquire the public IP and instance ID of this from the metadata server.
+EC2PublicIP=$(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+EC2InstanceID=$(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)
+
+# If we were installed but for some reason aren't running on EC2, do nothing.
+if [ "${EC2InstanceID}"x == x ]; then
+    exit 1
+fi
+
+# Configure iptables to deny any nonroot user access to the metadata server.
+# This will prevent them from using the credentials located there.
+/sbin/iptables -A OUTPUT \
+    -m owner --destination 169.254.169.254 ! --uid-owner 0 \
+    -j REJECT
+
+# Set the EC2PublicIP and EC2InstanceID macros. The example EC2 configuration
+# uses these values (advertises the latter and sets TCP_FORWARDING_HOST to
+# the former).
+echo "EC2PublicIP = ${EC2PublicIP}"
+echo "EC2InstanceID = \"${EC2InstanceID}\""
+
+) >> /etc/condor/config.d/49ec2-instance.config
+
+    RVAL=$?
+    if [ $RVAL -ne 0 ]; then
+        echo "failed!"
+    else
+        echo "done."
+    fi
+
+return $RVAL
+}
+
+case "$1" in
+    start)
+        start
+        RETVAL=$?
+        ;;
+    stop|restart|try-restart|condrestart|reload|force-reload)
+        # Unsupported.
+        RETVAL=3
+        ;;
+    *)
+        echo $"Usage: $0 {start}"
+        RETVAL=2
+        ;;
+esac
+
+exit $RETVAL

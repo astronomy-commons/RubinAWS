@@ -1,0 +1,52 @@
+# This configuration file is a part of the HTCondor instalaltion.
+#
+# This configuration file configures HTCondor Head Node.
+
+# Make this a single-node pool.
+DAEMON_LIST = MASTER COLLECTOR SCHEDD STARTD NEGOTIATOR
+  
+# Taken from the manual's instructions on installing a minicondor.
+# ------------------------------------------------------------------------------
+  
+NETWORK_INTERFACE = *
+CONDOR_HOST = $(FULL_HOSTNAME)
+  
+SEC_DAEMON_INTEGRITY = REQUIRED
+SEC_DAEMON_AUTHENTICATION = REQUIRED
+SEC_DAEMON_AUTHENTICATION_METHODS = PASSWORD
+SEC_NEGOTIATOR_INTEGRITY = REQUIRED
+SEC_NEGOTIATOR_AUTHENTICATION = REQUIRED
+SEC_NEGOTIATOR_AUTHENTICATION_METHODS = PASSWORD
+SEC_CLIENT_AUTHENTICATION_METHODS = FS, PASSWORD
+ALLOW_ADMINISTRATOR = $(CONDOR_HOST) $(TCP_FORWARDING_HOST)
+ALLOW_DAEMON = condor_pool@*
+  
+# ------------------------------------------------------------------------------
+# The following is different from the instructions because the RHEL7 RPM
+# sets $(LOCAL_DIR) in a deeply unfortunate way.
+SEC_PASSWORD_FILE = /etc/condor/condor_pool_password
+  
+# Configure the pool to be externally accessible. While this isn't necessary
+# for the proper functioning of an AWS-only pool, condor_annex can't verify
+# the accessibility of this host if it's not externally available, and there's
+# not presently an option to disable that check.
+#
+# Note that EC2PublicIP is set by the condor-annex-ec2 package.
+TCP_FORWARDING_HOST = $(EC2PublicIP)
+COLLECTOR_HOST = $(TCP_FORWARDING_HOST):9618
+ALLOW_WRITE = $(ALLOW_WRITE) $(TCP_FORWARDING_HOST)
+ALLOW_DAEMON = $(ALLOW_DAEMON) $(TCP_FORWARDING_HOST)
+ALLOW_NEGOTIATOR = $(ALLOW_NEGOTIATOR) $(TCP_FORWARDING_HOST)
+ 
+# more verbose debug output
+COLLECTOR_DEBUG = D_FULLDEBUG D_COMMAND
+ANNEX_GAHP_DEBUG = D_FULLDEBUG
+ANNEX_DEBUG = D_FULLDEBUG
+ 
+# elevate to $USER
+UID_DOMAIN = compute.internal
+TRUST_UID_DOMAIN = true
+ 
+# Preferentially target AWS pools if there are any.
+MayUseAWS = true
+SUBMIT_ATTRS = MayUseAWS

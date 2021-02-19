@@ -1,0 +1,7 @@
+# This configuration file is a part of the HTCondor instalaltion.
+#
+# This configuration file configures Condors URI transfer behaviour
+# and configures the location of the S3 transfer plugin script.
+
+ENABLE_URL_TRANSFERS = TRUE
+FILETRANSFER_PLUGINS = $(LIBEXEC)/s3.sh
