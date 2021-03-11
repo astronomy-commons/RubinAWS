@@ -17,7 +17,7 @@ more about the project see
 * this Data Management Technical Note [DMTN-137](https://dmtn-137.lsst.io/) for AWS
 * or this [DMTN-157](https://dmtn-157.lsst.io/) for GCE
 
-This repository is a collection of [Packer])(https://www.packer.io/) and [Terraform](https://www.terraform.io/)
+This repository is a collection of [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/)
 scripts needed to stand up a basic Rubin Science Pipelines infrastructure on AWS
 suitable for development and demonstration purposes.
 
