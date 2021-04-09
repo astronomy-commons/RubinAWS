@@ -105,20 +105,40 @@ source "amazon-ebs" "head" {
             delete_on_termination = true
     }
     ssh_username = "centos"
-    ami_name = "packerTest-{{timestamp}}"
+    ami_name = "head-{{timestamp}}"
 }
 
+source "amazon-ebs" "worker" {
+    profile = "$(var.aws_profile}"
+    access_key = "${var.aws_access_key}"
+    secret_key = "${var.aws_secret_key}"
+    instance_type = "${var.instance_type}"
+    region = "${var.aws_region}"
+    source_ami_filter {
+        filters = {
+            virtualization-type = "hvm"
+            name = "${var.base_ami_name}"
+            root-device-type = "ebs"
+        }
+        owners = [ "125523088429" ]
+        most_recent = true
+    }
+    launch_block_device_mappings {
+            device_name = "/dev/sda1"
+            volume_size = "${var.volume_size}"
+            volume_type = "gp2"
+            delete_on_termination = true
+    }
+    ssh_username = "centos"
+    ami_name = "worker-{{timestamp}}"
+}
 
 ################
 # Builder
 ################
 
 build {
-    source "amazon-ebs.head" {
-      name = "worker"
-    }
-
-    sources = ["source.amazon-ebs.head", ]
+    sources = ["source.amazon-ebs.head", "source.amazon-ebs.worker"]
 
     provisioner "file" {
         source = "../scripts"
