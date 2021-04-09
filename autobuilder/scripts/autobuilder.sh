@@ -2,6 +2,8 @@
 set -x
 
 BUILD_TYPE=$1
+export AWS_REGION=$2
+
 build_type="None"
 case $BUILD_TYPE in
     "Worker")
