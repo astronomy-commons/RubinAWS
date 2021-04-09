@@ -147,7 +147,7 @@ build {
     provisioner "shell" {
         inline = [
           "chmod u+x /tmp/scripts/autobuilder.sh",
-          "/tmp/scripts/autobuilder.sh ${source.name}"
+          "/tmp/scripts/autobuilder.sh ${source.name} ${source.region}"
         ]
     }
 }
