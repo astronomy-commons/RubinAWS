@@ -10,9 +10,9 @@ CWD=$1
 cd $CWD
 
 if [ -z "$AWS_SECRET_ACCESS_KEY" ] && [ -z "$AWS_ACCESS_KEY_ID" ]; then
-    RUN_ANNEX_SETUP=true
-else
     RUN_ANNEX_SETUP=false
+else
+    RUN_ANNEX_SETUP=true
 fi
 
 
