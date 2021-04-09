@@ -20,7 +20,7 @@ sudo dnf config-manager --set-enabled powertools
 sudo yum update -y
 sudo yum install -y curl patch wget git diffutils java
 
-git clone -b packer https://github.com/DinoBektesevic/autobuilder.git
+git clone https://github.com/astronomy-commons/RubinAWS.git
 
 
 ####

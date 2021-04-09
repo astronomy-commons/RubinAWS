@@ -51,5 +51,5 @@ sudo systemctl enable condor-annex-ec2
 cd $CWD
 mkdir -p .install
 mv RPM-GPG-KEY-HTCondor pegasus-5.0.0-1.el8.x86_64.rpm -t .install/
-mv -n autobuilder -t .install/
+mv -n RubinAWS -t .install/
 
