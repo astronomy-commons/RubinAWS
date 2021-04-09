@@ -65,6 +65,9 @@ mkdir -p lsst_stack
 cd lsst_stack
 
 curl -OL https://raw.githubusercontent.com/lsst/lsst/master/scripts/newinstall.sh
+
+# This is a fix for the stack having removed CentOS 8 support
+export LSST_SPLENV_REF=0.4.1
 bash ~/lsst_stack/newinstall.sh -bct
 
 source ~/lsst_stack/loadLSST.bash
