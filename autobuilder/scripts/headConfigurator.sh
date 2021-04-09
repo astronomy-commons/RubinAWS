@@ -19,8 +19,8 @@ fi
 ####
 #   1) Configure instance as HTCondor head node
 ####
-sudo cp ~/autobuilder/configs/condor_head_config /etc/condor/config.d/local
-sudo cp ~/autobuilder/configs/condor_annex_ec2 /usr/libexec/condor/condor-annex-ec2
+sudo cp ~/RubinAWS/autobuilder/configs/condor_head_config /etc/condor/config.d/local
+sudo cp ~/RubinAWS/autobuilder/configs/condor_annex_ec2 /usr/libexec/condor/condor-annex-ec2
 
 #   1.1) Configure a Condor Pool Password.
 #        Both Condor and Condor Annex need the condor pool password. But Condor needs it
@@ -40,9 +40,9 @@ sudo chown root $passwd_file_path
 sudo chown $USER ~/.condor/condor_pool_password
 
 #   1.2) Set up an HTCondor S3 Transfer Plugin
-sudo cp ~/autobuilder/configs/s3.sh /usr/libexec/condor/s3.sh
+sudo cp ~/RubinAWS/autobuilder/configs/s3.sh /usr/libexec/condor/s3.sh
 sudo chmod 755 /usr/libexec/condor/s3.sh
-sudo cp ~/autobuilder/configs/10_s3 /etc/condor/config.d/10-s3
+sudo cp ~/RubinAWS/autobuilder/configs/10_s3 /etc/condor/config.d/10-s3
 
 #   1.3) Configure Condor Annex Defaults. If credentials are non-empty strings
 #        configure keys so that Condor Annex can succesfully run. Keys are cleanued
@@ -77,7 +77,7 @@ fi
 echo "# The following commands were added by Rubin AWS autobuilder." >> ~/.bashrc
 echo "source ~/lsst_stack/loadLSST.bash" >> ~/.bashrc
 echo "setup lsst_distrib" >> ~/.bashrc
-echo "source ~/.install/autobuilder/auth/authenticate.sh" >> ~/.bashrc
+echo "source ~/.install/RubinAWS/autobuilder/auth/authenticate.sh" >> ~/.bashrc
 
 
 ####

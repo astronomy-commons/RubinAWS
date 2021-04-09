@@ -14,7 +14,7 @@ cd $CWD
 #   1) Configure instance as HTCondor worker node
 ####
 cd $CWD
-sudo cp ~/autobuilder/configs/condor_worker_config /etc/condor/config.d/local
+sudo cp ~/RubinAWS/autobuilder/configs/condor_worker_config /etc/condor/config.d/local
 echo "SSH_TO_JOB_SSHD_CONFIG_TEMPLATE = /etc/condor/condor_ssh_to_job_sshd_config_template" >> /etc/condor_config
 sudo rm /etc/condor/config.d/50ec2.config
 
