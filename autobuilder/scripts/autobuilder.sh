@@ -3,6 +3,8 @@ set -x
 
 BUILD_TYPE=$1
 export AWS_REGION=$2
+export AWS_ACCESS_KEY_ID=$3
+export AWS_SECRET_ACCESS_KEY=$4
 
 build_type="None"
 case $BUILD_TYPE in
