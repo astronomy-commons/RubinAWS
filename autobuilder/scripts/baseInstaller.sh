@@ -26,9 +26,13 @@ sudo systemctl enable iptables
 sudo systemctl start ip6tables
 sudo systemctl enable ip6tables
 
+mkdir -p .awscli
+cd .awscli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
+rm awscliv2.zip
+cd $CWD
 
 git clone https://github.com/astronomy-commons/RubinAWS.git
 
