@@ -15,7 +15,7 @@ cd $CWD
 ####
 cd $CWD
 sudo cp ~/RubinAWS/autobuilder/configs/condor_worker_config /etc/condor/config.d/local
-echo "SSH_TO_JOB_SSHD_CONFIG_TEMPLATE = /etc/condor/condor_ssh_to_job_sshd_config_template" >> /etc/condor_config
+echo "SSH_TO_JOB_SSHD_CONFIG_TEMPLATE = /etc/condor/condor_ssh_to_job_sshd_config_template" >> /etc/condor/condor_config
 sudo rm /etc/condor/config.d/50ec2.config
 
 #   1.1) Restart Condor to reload config values. Run annex configurator.

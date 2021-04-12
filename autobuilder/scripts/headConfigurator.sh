@@ -31,7 +31,7 @@ mkdir -p ~/.condor
 
 random_passwd=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
 passwd_file_path=`condor_config_val SEC_PASSWORD_FILE`
-sudo condor_store_cred add -f $passwd_file_path -p $random_passwd
+sudo condor_store_cred -c add -f $passwd_file_path -p $random_passwd
 
 sudo cp $passwd_file_path ~/.condor/
 
@@ -53,7 +53,7 @@ if [ $RUN_ANNEX_SETUP = true ]; then
     sudo chmod 600 ~/.condor/*KeyFile
 fi
 
-echo "SEC_PASSWORD_FILE=~/.condor/condor_pool_password" > ~/.condor/user_config
+echo "SEC_PASSWORD_FILE=${HOME}/.condor/condor_pool_password" > ~/.condor/user_config
 echo "ANNEX_DEFAULT_AWS_REGION=${AWS_REGION}" >> ~/.condor/user_config
 sudo chown $USER ~/.condor/user_config
 
